@@ -12,20 +12,7 @@ const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 const client = new djs.Client({
     intents: [
         djs.Intents.FLAGS.GUILDS,
-        djs.Intents.FLAGS.GUILD_BANS,
-        djs.Intents.FLAGS.GUILD_INVITES,
         djs.Intents.FLAGS.GUILD_MEMBERS,
-        djs.Intents.FLAGS.GUILD_MESSAGES,
-        djs.Intents.FLAGS.GUILD_PRESENCES,
-        djs.Intents.FLAGS.GUILD_VOICE_STATES,
-        djs.Intents.FLAGS.GUILD_MESSAGE_TYPING,
-        djs.Intents.FLAGS.GUILD_SCHEDULED_EVENTS,
-        djs.Intents.FLAGS.GUILD_MESSAGE_REACTIONS,
-        djs.Intents.FLAGS.GUILD_EMOJIS_AND_STICKERS,
-        
-        djs.Intents.FLAGS.DIRECT_MESSAGES,
-        djs.Intents.FLAGS.DIRECT_MESSAGE_TYPING,
-        djs.Intents.FLAGS.DIRECT_MESSAGE_REACTIONS,
     ]
 });
 
