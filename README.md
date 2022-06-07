@@ -40,7 +40,7 @@ Open the terminal and cd into the folder, then run
 `npm i && npm start`
 
 ### Step 5:
-`"TargerServer": 12233344445555666`
+`"The Most Creative Server Name": 12233344445555666`\
 Copy the ID following the correct server name and enter it.
 
 ### Step 6:
